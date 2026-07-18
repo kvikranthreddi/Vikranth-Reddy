@@ -1,69 +1,55 @@
-// Array of Users
-
 var users = [
-
     {
-
         name: "John Doe",
-
         gender: "Male",
-
         img: "john.png"
-
     },
-
     {
-
         name: "Jane Doe",
-
         gender: "Female",
-
         img: "jane.png"
-
     }
-
 ];
 
 // Current User
-
 var id = 0;
 
-// Toggle User
+// Toggle Button (uses local users)
+function toggleUser() {
 
-function toggleUser(){
+    id = (id + 1) % users.length;
 
-    id = (id + 1) % 2;
-
-    var userImage = document.getElementById("user-image");
-
-    var userName = document.getElementById("user-name");
-
-    var userGender = document.getElementById("user-gender");
-
-    userImage.src = users[id].img;
-
-    userName.innerHTML = users[id].name;
-
-    userGender.innerHTML = users[id].gender;
-
+    document.getElementById("user-image").src = users[id].img;
+    document.getElementById("user-name").innerHTML = users[id].name;
+    document.getElementById("user-gender").innerHTML = users[id].gender;
 }
 
-// Random User
+// Random Button (uses API)
+function randomUser() {
 
-function randomUser(){
+    fetch("https://randomuser.me/api/")
 
-    id = Math.floor(Math.random() * users.length);
+        .then(function(response) {
+            return response.json();
+        })
 
-    var userImage = document.getElementById("user-image");
+        .then(function(data) {
 
-    var userName = document.getElementById("user-name");
+            var userData = data.results[0];
 
-    var userGender = document.getElementById("user-gender");
+            document.getElementById("user-image").src =
+                userData.picture.large;
 
-    userImage.src = users[id].img;
+            document.getElementById("user-name").innerHTML =
+                userData.name.first + " " + userData.name.last;
 
-    userName.innerHTML = users[id].name;
+            document.getElementById("user-gender").innerHTML =
+                userData.gender;
 
-    userGender.innerHTML = users[id].gender;
+        })
+
+        .catch(function(error) {
+            console.log(error);
+        });
 
 }
